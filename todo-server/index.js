@@ -4,8 +4,7 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const uuid = require('uuid/v1');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // GET method
@@ -49,8 +48,29 @@ app.post('/todos', (req, res) => {
 
 // DELETE method
 
-app.delete('/todos', (req,res) => {
-	res.send('deleted')
-});
+app.delete('/todos/:id', (req,res) => {
 
-app.listen(3000, () => console.log(`Listened on 3000 port`));
+  const todosJson = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
+  const todosObj = JSON.parse(todosJson);
+  
+  const tomb = todosObj.filter((todoElement) => {
+    // console.log(todoElement);
+    return todoElement.id !== req.params.id;
+  });
+  console.log(tomb);
+
+  // const tomb = read2.filter(todoElement => todoElement.id !== req.params.id);
+
+
+	const content = JSON.stringify(tomb);
+	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',content)
+  
+  console.log("delete: req.params.id " + JSON.stringify(req.params.id));
+
+  res.json(content);
+  
+  
+})
+
+
+app.listen(3000, () => console.log(`Server listened on 3000 port...`));
