@@ -13,13 +13,6 @@ app.get('/', (req, res) => {
 	res.send('Main page');
 }),
 
-/*app.get('/todos', (req, res) => {
-	fs.readFile('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json', (err, data) => {
-    if (err) throw err;
-    let todos = JSON.parse(data);
-    res.json(todos);
-});*/
-
 app.get('/todos', (req, res) => {
 	 const todo = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
 	 const read = JSON.parse(todo);
@@ -53,24 +46,38 @@ app.delete('/todos/:id', (req,res) => {
   const todosJson = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
   const todosObj = JSON.parse(todosJson);
   
-  const tomb = todosObj.filter((todoElement) => {
-    // console.log(todoElement);
+  const filArray = todosObj.filter((todoElement) => {
     return todoElement.id !== req.params.id;
   });
-  console.log(tomb);
 
   // const tomb = read2.filter(todoElement => todoElement.id !== req.params.id);
 
-
-	const content = JSON.stringify(tomb);
+	const content = JSON.stringify(filArray);
 	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',content)
   
   console.log("delete: req.params.id " + JSON.stringify(req.params.id));
 
   res.json(content);
-  
-  
 })
 
+// PUT method
+
+app.put('/todos/:id',(req,res)  => {
+	const id = req.params.id;
+	const requestBody = req.body;
+	console.log(req.query, req.body);
+	const jsonContent = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json');
+	const parseContent = JSON.parse(jsonContent);
+
+	const index = parseContent.findIndex((todo) => {
+		return todo.id === id;
+	});
+	Object.assign(parseContent[index], requestBody);
+
+	const stringContent = JSON.stringify(parseContent);
+	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',stringContent);
+
+	res.json(parseContent);
+})
 
 app.listen(3000, () => console.log(`Server listened on 3000 port...`));
