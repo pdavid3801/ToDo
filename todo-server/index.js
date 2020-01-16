@@ -16,13 +16,13 @@ app.get('/', (req, res) => {
 app.get('/todos', (req, res) => {
 	 const todo = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
 	 const read = JSON.parse(todo);
-	res.send(read);
+	res.send(todo);
 }), 
 
 // POST method
 
 app.post('/todos', (req, res) => {
-	const todos = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
+	const todos = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/json')
 	const newTodo = {
 		id : uuid(),
 		title : "",
@@ -33,7 +33,7 @@ app.post('/todos', (req, res) => {
 	read.push(newTodo);
 
 	const content = JSON.stringify(read);
-	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',content)
+	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/json',content)
 
 	res.send(read);
     res.end();
@@ -50,7 +50,7 @@ app.delete('/todos/:id', (req,res) => {
     return todoElement.id !== req.params.id;
   });
 
-  // const tomb = read2.filter(todoElement => todoElement.id !== req.params.id);
+  // const filArray = todosObj.filter(todoElement => todoElement.id !== req.params.id);
 
 	const content = JSON.stringify(filArray);
 	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',content)
