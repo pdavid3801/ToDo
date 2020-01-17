@@ -18,9 +18,9 @@ app.get('/', (req, res) => {
 }),
 
 app.get('/todos', (req, res) => {
-	 const todo = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
+	 const todo = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/todo-server/todos.json')
 	 const read = JSON.parse(todo);
-	res.send(todo);
+	res.send(read);
 }), 
 
 // POST method
@@ -47,7 +47,7 @@ app.post('/todos', (req, res) => {
 
 app.delete('/todos/:id', (req,res) => {
 
-  const todosJson = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json')
+  const todosJson = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/todo-server/todos.json')
   const todosObj = JSON.parse(todosJson);
   
   const filArray = todosObj.filter((todoElement) => {
@@ -57,7 +57,7 @@ app.delete('/todos/:id', (req,res) => {
   // const filArray = todosObj.filter(todoElement => todoElement.id !== req.params.id);
 
 	const content = JSON.stringify(filArray);
-	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',content)
+	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/todo-server/todos.json',content)
   
   console.log("delete: req.params.id " + JSON.stringify(req.params.id));
 
@@ -70,7 +70,7 @@ app.put('/todos/:id',(req,res)  => {
 	const id = req.params.id;
 	const requestBody = req.body;
 	console.log(req.query, req.body);
-	const jsonContent = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json');
+	const jsonContent = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/todo-server/todos.json');
 	const parseContent = JSON.parse(jsonContent);
 
 	const index = parseContent.findIndex((todo) => {
@@ -79,7 +79,7 @@ app.put('/todos/:id',(req,res)  => {
 	Object.assign(parseContent[index], requestBody);
 
 	const stringContent = JSON.stringify(parseContent);
-	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/basic-node-server/json/todos.json',stringContent);
+	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/todo-server/todos.json',stringContent);
 
 	res.json(parseContent);
 })
