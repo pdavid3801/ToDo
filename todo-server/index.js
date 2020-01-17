@@ -3,9 +3,13 @@ const app = express();
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const uuid = require('uuid/v1');
+const cors = require('cors');
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const todosFile = __dirname + '/todos.json';
 
 // GET method
 
@@ -22,7 +26,7 @@ app.get('/todos', (req, res) => {
 // POST method
 
 app.post('/todos', (req, res) => {
-	const todos = fs.readFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/json')
+	const todos = fs.readFileSync(todosFile);
 	const newTodo = {
 		id : uuid(),
 		title : "",
@@ -33,7 +37,7 @@ app.post('/todos', (req, res) => {
 	read.push(newTodo);
 
 	const content = JSON.stringify(read);
-	fs.writeFileSync('/home/pfeil/Dokumentumok/Code/node/ToDo/json',content)
+	fs.writeFileSync(todosFile, content)
 
 	res.send(read);
     res.end();

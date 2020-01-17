@@ -6,14 +6,12 @@ const data = {
   isDone: true
 }
 
-const objData = JSON.parse(data);
-
 fetch('http://localhost:3000/todos', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
   },
-  body: JSON.stringify(objData),
+  body: JSON.stringify(data),
 })
 .then((response) => response.json())
 .then((data) => {
